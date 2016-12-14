@@ -14,21 +14,10 @@ func ReverseGeneric(start unsafe.Pointer, size uintptr, lenght int) {
 	}
 }
 
-func getSize(a interface{}) uintptr {
-	switch reflect.ValueOf(a).Index(0).Kind() {
-	case reflect.String:
-		return unsafe.Sizeof("")
-	case reflect.Struct:
-		return reflect.TypeOf(reflect.ValueOf(a).Index(0)).Size()
-	default:
-		panic("invalid type")
-	}
-}
-
 func DoReverse(a interface{}) {
 
 	start := reflect.ValueOf(a).Index(0).UnsafeAddr()
-	size := getSize(a)
+	size := reflect.ValueOf(a).Index(0).Type().Size()
 	length := reflect.ValueOf(a).Len()
 
 	ReverseGeneric(unsafe.Pointer(start), size, length)
